@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -11,12 +13,10 @@ class TaskController extends Controller
     {
         $tasks = Task::where('user_id', auth()->id());
 
-        // Căutare după titlu
         if ($request->filled('search')) {
             $tasks->where('title', 'like', '%' . $request->search . '%');
         }
 
-        // Filtrare după status
         if ($request->filled('status')) {
             $tasks->where('status', $request->status);
         }
@@ -24,6 +24,7 @@ class TaskController extends Controller
         $tasks = $tasks->latest()->get();
 
         $totalTasks = Task::where('user_id', auth()->id())->count();
+
         $todoTasks = Task::where('user_id', auth()->id())
             ->where('status', 'todo')
             ->count();
@@ -50,23 +51,11 @@ class TaskController extends Controller
         return view('tasks.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'priority' => 'required|in:low,medium,high',
-            'status' => 'required|in:todo,in_progress,done',
-            'due_date' => 'nullable|date',
-        ]);
-
         Task::create([
             'user_id' => auth()->id(),
-            'title' => $request->title,
-            'description' => $request->description,
-            'priority' => $request->priority,
-            'status' => $request->status,
-            'due_date' => $request->due_date,
+            ...$request->validated(),
         ]);
 
         return redirect()
@@ -81,25 +70,11 @@ class TaskController extends Controller
         return view('tasks.edit', compact('task'));
     }
 
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
         $this->authorize('update', $task);
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'priority' => 'required|in:low,medium,high',
-            'status' => 'required|in:todo,in_progress,done',
-            'due_date' => 'nullable|date',
-        ]);
-
-        $task->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'priority' => $request->priority,
-            'status' => $request->status,
-            'due_date' => $request->due_date,
-        ]);
+        $task->update($request->validated());
 
         return redirect()
             ->route('tasks.index')
