@@ -1,5 +1,10 @@
 # Task Manager
 
+![Laravel](https://img.shields.io/badge/Laravel-13-red)
+![PHP](https://img.shields.io/badge/PHP-8.3-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Tests](https://img.shields.io/badge/Tests-Passing-success)
+
 Aplicație web de gestionare a task-urilor personale, construită cu Laravel 13 și PHP 8.3. Fiecare utilizator își administrează propria listă de task-uri, cu prioritizare, status, deadline-uri, căutare și filtrare.
 
 ![Dashboard](screenshots/dashboard.png)
@@ -92,11 +97,19 @@ Aplicația va fi disponibilă la `http://localhost:8000`. Contul de test creat p
 - **Email:** `test@example.com`
 - **Parolă:** `password`
 
+## Testare
+
+Suita de teste Pest acoperă CRUD-ul de task-uri și autorizarea (verifică faptul că un user nu poate modifica sau șterge task-urile altui user):
+
+```bash
+php artisan test
+```
+
 ## Roadmap
 
-- [ ] Extragerea autorizării în `TaskPolicy` (în locul verificărilor manuale din controller)
-- [ ] Validare prin `FormRequest`-uri dedicate (`StoreTaskRequest`, `UpdateTaskRequest`)
-- [ ] Testare automată cu Pest
+- [x] Extragerea autorizării în `TaskPolicy` (în locul verificărilor manuale din controller)
+- [x] Validare prin `FormRequest`-uri dedicate (`StoreTaskRequest`, `UpdateTaskRequest`)
+- [x] Testare automată cu Pest
 - [ ] Sortare task-uri (după deadline, prioritate)
 
 ## Autor
