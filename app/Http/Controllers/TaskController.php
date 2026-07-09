@@ -74,29 +74,16 @@ class TaskController extends Controller
             ->with('success', 'Task creat cu succes!');
     }
 
-    public function show(Task $task)
-    {
-        if ($task->user_id !== auth()->id()) {
-            abort(403);
-        }
-
-        return redirect()->route('tasks.index');
-    }
-
     public function edit(Task $task)
     {
-        if ($task->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $task);
 
         return view('tasks.edit', compact('task'));
     }
 
     public function update(Request $request, Task $task)
     {
-        if ($task->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $task);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -121,9 +108,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        if ($task->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('delete', $task);
 
         $task->delete();
 
