@@ -2,6 +2,8 @@
 
 Aplicație web de gestionare a task-urilor personale, construită cu Laravel 13 și PHP 8.3. Fiecare utilizator își administrează propria listă de task-uri, cu prioritizare, status, deadline-uri, căutare și filtrare.
 
+![Dashboard](screenshots/dashboard.png)
+
 ## Funcționalități
 
 - **Autentificare completă** (înregistrare, login, resetare parolă, verificare email) — implementată cu Laravel Breeze
@@ -13,6 +15,39 @@ Aplicație web de gestionare a task-urilor personale, construită cu Laravel 13 
 - **Filtrare după status**
 - **Dashboard cu statistici** — total task-uri, distribuția pe status (todo / in progress / done)
 - **Izolare per utilizator** — fiecare user vede și modifică doar propriile task-uri
+
+## Capturi de ecran
+
+<table>
+<tr>
+<td width="50%">
+
+**Adăugare task**
+![Adaugă task](screenshots/create-task.png)
+
+</td>
+<td width="50%">
+
+**Editare task**
+![Editează task](screenshots/edit-task.png)
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Filtrare după status**
+![Filtrare status](screenshots/filter-status.png)
+
+</td>
+<td width="50%">
+
+**Lista de task-uri**
+![Lista task-uri](screenshots/task-list.png)
+
+</td>
+</tr>
+</table>
 
 ## Stack tehnic
 
@@ -46,13 +81,16 @@ php artisan key:generate
 Configurează conexiunea la baza de date în `.env`, apoi:
 
 ```bash
-php artisan migrate
+php artisan migrate:fresh --seed
 npm install
 npm run build
 php artisan serve
 ```
 
-Aplicația va fi disponibilă la `http://localhost:8000`.
+Aplicația va fi disponibilă la `http://localhost:8000`. Contul de test creat prin seeder:
+
+- **Email:** `test@example.com`
+- **Parolă:** `password`
 
 ## Roadmap
 
