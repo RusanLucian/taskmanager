@@ -6,12 +6,13 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $tasks = Task::where('user_id', auth()->id());
+        $tasks = Task::where('user_id', Auth::id());
 
         if ($request->filled('search')) {
             $tasks->where('title', 'like', '%' . $request->search . '%');
@@ -23,17 +24,17 @@ class TaskController extends Controller
 
         $tasks = $tasks->latest()->get();
 
-        $totalTasks = Task::where('user_id', auth()->id())->count();
+        $totalTasks = Task::where('user_id', Auth::id())->count();
 
-        $todoTasks = Task::where('user_id', auth()->id())
+        $todoTasks = Task::where('user_id', Auth::id())
             ->where('status', 'todo')
             ->count();
 
-        $inProgressTasks = Task::where('user_id', auth()->id())
+        $inProgressTasks = Task::where('user_id', Auth::id())
             ->where('status', 'in_progress')
             ->count();
 
-        $doneTasks = Task::where('user_id', auth()->id())
+        $doneTasks = Task::where('user_id', Auth::id())
             ->where('status', 'done')
             ->count();
 
@@ -54,7 +55,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         Task::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             ...$request->validated(),
         ]);
 
